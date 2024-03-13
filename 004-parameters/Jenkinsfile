@@ -1,0 +1,21 @@
+pipeline {
+    agent any
+
+    parameters {
+        string(name: 'STRING1')
+        text(name: 'TEXT1')
+        booleanParam(name: 'BUILD_PARAM1')
+        choice(name: 'CHOICE1', choices: 'Build\nTest\nDeploy')
+        password(name: 'PASSWORD1')
+        file(name: 'FILE1')
+    }
+
+    stages {
+        stage('parameters') {
+            steps {
+                echo 'PRINT PARAMS'
+                echo "STRING: ${params.STRING1} \nTEXT: ${params.TEXT1} \nBOOLEAN_PARAM: ${params.BOOLEAN_PARAM1} \nCHOICE: ${params.CHOICE1} \nPASSWORD: ${params.PASSWORD1} \nFILE: ${params.FILE1}"
+            }
+        }
+    }
+}
