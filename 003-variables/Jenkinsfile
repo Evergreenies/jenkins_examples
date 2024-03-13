@@ -1,0 +1,77 @@
+def image = "some-image"
+
+pipeline {
+    agent any
+    
+    environment {
+        TOOL_NAME = "Jenkins"
+    }
+
+    stages {
+        stage('env-variables') {
+            steps {
+                echo "Current build number: ${BUILD_NUMBER}"
+                echo "Current build id: ${BUILD_ID}"
+            }
+        }
+        
+        stage('global-user-defined-variables') {
+            steps {
+                echo "Global user defiled variable: image: ${image}"
+            }
+        }
+        
+        stage('stage-scopped-variables') {
+            environment {
+                TOOL_NAME = "Jenkins-Tool"
+            }
+            
+            steps {
+                echo "Scops of variable: TOOL_NAME: ${TOOL_NAME}"
+            }
+        }
+        
+        stage('script-scopped-variables') {
+            environment {
+                TOOL_NAME = "Jenkins-Tool"
+            }
+            
+            steps {
+                script {
+                    environment {
+                        TOOL_NAME = "Jenkins-Env-In-Script"
+                    }
+            
+                    echo "Scops of variable: TOOL_NAME: ${TOOL_NAME}"
+                }
+            }
+        }
+        
+        stage('scripts-scopped-variables') {
+            environment {
+                TOOL_NAME = "Jenkins-Tool"
+            }
+            
+            steps {
+                script {
+                    TOOL_NAME = "Jenkins-In-Script"
+                }
+                echo "Scops of variable: TOOL_NAME: ${TOOL_NAME} and ${env.TOOL_NAME}"
+            }
+        }
+        
+        stage('concatinate-variables') {
+            environment {
+                TOOL_NAME = "Jenkins-Tool"
+            }
+            
+            steps {
+                script {
+                    TOOL_NAME = "Jenkins-In-Script"
+                    fullToolName = TOOL_NAME + env.TOOL_NAME
+                }
+                echo "Scops of variable: TOOL_NAME: ${fullToolName}"
+            }
+        }
+    }
+}
